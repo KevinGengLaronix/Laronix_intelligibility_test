@@ -51,10 +51,10 @@ function start_experiment() {
 
     // directories for methods
     var methods = [];
-    methods.push(wav_dir + "EL-Arthur the Rat_normed_5_snr_100/");
-    methods.push(wav_dir + "TEP-Arthur the Rat_normed_5_snr_100/");
-    methods.push(wav_dir + "PAL-Arthur the Rat_normed_5_snr_100/");
-    methods.push(wav_dir + "PAL_John-Arthur the Rat_normed_5_snr_100/");
+    methods.push(wav_dir + "EL-Arthur_the_Rat_normed_5_snr_100/");
+    methods.push(wav_dir + "HEALTHY-Arthur_the_Rat_normed_5_snr_100/");
+    methods.push(wav_dir + "PAL_John-Arthur_the_Rat_normed_5_snr_100/");
+    methods.push(wav_dir + "TEP-Arthur_the_Rat_normed_5_snr_100/");
     // methods.push(wav_dir + "method2/");
     // methods.push(wav_dir + "method3/");
     // methods.push(wav_dir + "method4/");
@@ -63,14 +63,14 @@ function start_experiment() {
     // methods.push(wav_dir + "method7/");
 
     // number of samples displayed per page
-    n_per_page = 5;
+    n_per_page = 6;
 
     // pick up samples randomly
     var rands = pickN(0, n_utt - 1, n_per_page * 2);
     // var number = document.getElementById("number").value
     file_list = makeFileList(methods, set_num);
     outfile = name + "_" + "set" + set_num + ".csv";
-    nat_scores = (new Array(file_list.length)).fill(0);
+    nat_scores = (new Array(file_list.length)).fill("");
     init();
 }
 
@@ -91,19 +91,6 @@ function loadText(filename) {
 
     return list;
 }
-
-// make file list
-// function makeFileList(methods, rands) {
-//     var files = new Array();
-//     var names = loadText(wavnames);
-//     for (var i = 0; i < methods.length; i++) {
-//         for (var j = 0; j < rands.length; j++) {
-//             files.push(methods[i] + names[rands[j]] + ".wav");
-//         }
-//     }
-//     files.shuffle();
-//     return files;
-// }
 
 function makeFileList(methods, which_set) {
     var files = new Array();
@@ -131,54 +118,27 @@ function makeFileList(methods, which_set) {
     return files;
 }
 
+const log = document.getElementById('log');
+
 function setAudio() {
     document.getElementById("page").textContent = `Page ${page + 1} / ${Math.ceil(nat_scores.length / n_per_page)}`;
     for (var i = 0; i < n_per_page; i++) {
         // set audio
+        // TODO onchange detection
         document.getElementById("audio" + String(i)).innerHTML = `${i + 1}.<br>`
             + `<audio src="${file_list[page * n_per_page + i]}" style="width: 100%"`
             + ' controls controlsList="noplaybackrate nodownload noremoteplayback" preload="auto">'
             + '</audio>';
-
-        // initialize selected option using scores
-        var natselected = (new Array(6)).fill('');
-        for (var j = 0; j < 6; j++) {
-            if (nat_scores[page * n_per_page + i] == String(j)) {
-                natselected[j] = " natselected";
-                break;
-            }
-        }
-        // var natred = (new Array(6)).fill('');
-        // for (var j = 0; j < 6; j++) {
-        //     if (flu_scores[page * n_per_page + i] == String(j)) {
-        //         fluselected[j] = " fluselected";
-        //         break;
-        //     }
-        // }
         
-        // document.getElementById("fluselect" + String(i)).innerHTML = `<h4>Fluency(流暢性) </h4>`
-        //     + `<select id="flu${i}`
-        //     + `" onchange="evaluation(${i})">`
-        //     + `<option value="0"${fluselected[0]}>Please Select</option>`
-        //     + `<option value="5"${fluselected[5]}>Excellent</option>`
-        //     + `<option value="4"${fluselected[4]}>Good</option>`
-        //     + `<option value="3"${fluselected[3]}>Fair</option>`
-        //     + `<option value="2"${fluselected[2]}>Poor</option>`
-        //     + `<option value="1"${fluselected[1]}>Bad</option>`
-        //     + '</select>';
-        document.getElementById("natselect" + String(i)).innerHTML = ``
-            +`<select id="nat${i}`
-            + `" onchange="evaluation(${i})">`
-            + `<option value="0"${natselected[0]}>Please Select</option>`
-            + `<option value="5"${natselected[5]}>Excellent</option>`
-            + `<option value="4"${natselected[4]}>Good</option>`
-            + `<option value="3"${natselected[3]}>Fair</option>`
-            + `<option value="2"${natselected[2]}>Poor</option>`
-            + `<option value="1"${natselected[1]}>Bad</option>`
-            + '</select>';  
+        // TODO: change option into input textbox
+        // TODO onchange detection
+        document.getElementById("natselect" + String(i)).innerHTML = 
+            `<input type="text" value="" placeholder="dictate here" id="nat${i}" style="width: 100%; font-size: 28 px"` 
+        + `" onchange="evaluation(${i})">`;
     }
 
 }
+
 
 function init() {
     page = 0;
@@ -200,7 +160,7 @@ function setButton() {
     } else {
         document.getElementById("next").disabled = false;
         for (var i = 0; i < n_per_page; i++) {
-            if (document.getElementById(`nat${i}`).value == "0" ) {
+            if (document.getElementById(`nat${i}`).value == "") {
                 document.getElementById("next").disabled = true;
                 break;
             }
@@ -209,7 +169,7 @@ function setButton() {
     // finish button
     for (var i = 0; i < file_list.length; i++) {
         document.getElementById("finish").disabled = false;
-        if (nat_scores[i] == "0") {
+        if (nat_scores[i] == "") {
             document.getElementById("finish").disabled = true;
             break;
         }
@@ -217,7 +177,8 @@ function setButton() {
 }
 
 function evaluation(i) {
-    if (nat_scores[n_per_page * page + i] == "0") {
+    // document.getElementById(`nat${i}`).value = val;
+    if (nat_scores[n_per_page * page + i] == "") {
         nat_scores[page * n_per_page + i] = document.getElementById(`nat${i}`).value;
     }
     setButton();
@@ -225,7 +186,7 @@ function evaluation(i) {
 
 function exportCSV() {
     var csvData = "";
-    csvData+="Utt, Method, Nat\r\n"
+    csvData+="Utt, Method, Dictation\r\n"
     for (var i = 0; i < file_list.length; i++) {
         
         csvData += file_list[i] + "," + file_list[i].split('/')[1] + ", "
@@ -247,22 +208,9 @@ function exportCSV() {
 // TODO: Add a alert (and saving function after finishing each pages)
 
 function next() {
-    if (confirm("Good Job! Keep going on! Page: " + String(page + 1) + " / " + String(Math.ceil(nat_scores.length / n_per_page)))){
-        page++;
-        setAudio();
-        setButton();
-    }
-    else{
-        if (confirm("Are you sure you want to quit this test? \nOnce you left, you need to restart from the beginning.")){
-            exportCSV();            
-        }
-        else{
-            alert("Keep going on! Page: " + String(page + 1) + " / " + String(Math.ceil(nat_scores.length / n_per_page)));
-            page++;
-            setAudio();
-            setButton();
-        }
-    }
+    page++;
+    setAudio();
+    setButton();
 }
 
 function prev() {
