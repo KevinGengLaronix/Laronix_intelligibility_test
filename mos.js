@@ -51,10 +51,10 @@ function start_experiment() {
 
     // directories for methods
     var methods = [];
-    methods.push(wav_dir + "EL-Arthur_the_Rat_normed_5_snr_100/");
-    methods.push(wav_dir + "HEALTHY-Arthur_the_Rat_normed_5_snr_100/");
+    // methods.push(wav_dir + "EL-Arthur_the_Rat_normed_5_snr_100/");
+    // methods.push(wav_dir + "HEALTHY-Arthur_the_Rat_normed_5_snr_100/");
     methods.push(wav_dir + "PAL_John-Arthur_the_Rat_normed_5_snr_100/");
-    methods.push(wav_dir + "TEP-Arthur_the_Rat_normed_5_snr_100/");
+    // methods.push(wav_dir + "TEP-Arthur_the_Rat_normed_5_snr_100/");
     // methods.push(wav_dir + "method2/");
     // methods.push(wav_dir + "method3/");
     // methods.push(wav_dir + "method4/");
@@ -63,7 +63,7 @@ function start_experiment() {
     // methods.push(wav_dir + "method7/");
 
     // number of samples displayed per page
-    n_per_page = 6;
+    n_per_page = 5;
 
     // pick up samples randomly
     var rands = pickN(0, n_utt - 1, n_per_page * 2);
@@ -125,7 +125,7 @@ function setAudio() {
     for (var i = 0; i < n_per_page; i++) {
         // set audio
         // TODO onchange detection
-        document.getElementById("audio" + String(i)).innerHTML = `${i + 1}.<br>`
+        document.getElementById("audio" + String(i)).innerHTML = `${i + 1}. <br>`
             + `<audio src="${file_list[page * n_per_page + i]}" style="width: 100%"`
             + ' controls controlsList="noplaybackrate nodownload noremoteplayback" preload="auto">'
             + '</audio>';
@@ -133,7 +133,7 @@ function setAudio() {
         // TODO: change option into input textbox
         // TODO onchange detection
         document.getElementById("natselect" + String(i)).innerHTML = 
-            `<input type="text" value="" placeholder="dictate here" id="nat${i}" style="width: 100%; font-size: 28 px"` 
+            `<input type="text" value="" placeholder="dictate here" id="nat${i}" style="width: 100%;" maxlength: 128` 
         + `" onchange="evaluation(${i})">`;
     }
 
@@ -204,8 +204,6 @@ function exportCSV() {
     window.URL.revokeObjectURL(url);
     link.parentNode.removeChild(link);
 }
-
-// TODO: Add a alert (and saving function after finishing each pages)
 
 function next() {
     page++;
