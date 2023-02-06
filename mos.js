@@ -126,7 +126,7 @@ function setAudio() {
         // set audio
         // TODO onchange detection
         document.getElementById("audio" + String(i)).innerHTML = `${i + 1}. <br>`
-            + `<audio src="${file_list[page * n_per_page + i]}" style="width: 100%"`
+            + `<audio src="${file_list[page * n_per_page + i]}" style="width: 80%"`
             + ' controls controlsList="noplaybackrate nodownload noremoteplayback" preload="auto">'
             + '</audio>';
         
