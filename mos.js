@@ -179,17 +179,17 @@ function setButton() {
 function evaluation(i) {
     // document.getElementById(`nat${i}`).value = val;
     if (nat_scores[n_per_page * page + i] == "") {
-        nat_scores[page * n_per_page + i] = document.getElementById(`nat${i}`).value;
+        nat_scores[page * n_per_page + i] = "\"" + document.getElementById(`nat${i}`).value + "\"";
     }
     setButton();
 }
 
 function exportCSV() {
     var csvData = "";
-    csvData+="Utt, Method, Dictation\r\n"
+    csvData+="Utt,Method,Dictation\r\n"
     for (var i = 0; i < file_list.length; i++) {
         
-        csvData += file_list[i] + "," + file_list[i].split('/')[1] + ", "
+        csvData += file_list[i] + "," + file_list[i].split('/')[1] + ","
             + nat_scores[i] + "\r\n";
     }
 
