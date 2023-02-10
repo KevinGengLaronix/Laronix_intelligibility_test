@@ -51,10 +51,10 @@ function start_experiment() {
 
     // directories for methods
     var methods = [];
-    // methods.push(wav_dir + "EL-Arthur_the_Rat_normed_5_snr_100/");
-    // methods.push(wav_dir + "HEALTHY-Arthur_the_Rat_normed_5_snr_100/");
-    methods.push(wav_dir + "PAL_John-Arthur_the_Rat_normed_5_snr_100/");
-    // methods.push(wav_dir + "TEP-Arthur_the_Rat_normed_5_snr_100/");
+    methods.push(wav_dir + "HEALTHY-Arthur_the_Rat_normed_5_snr_100/");
+    methods.push(wav_dir + "PAL-Arthur_the_Rat_normed_5_snr_100/");
+    methods.push(wav_dir + "TEP-Arthur_the_Rat_normed_5_snr_100/");
+    methods.push(wav_dir + "EL-Arthur_the_Rat_normed_5_snr_100/");
     // methods.push(wav_dir + "method2/");
     // methods.push(wav_dir + "method3/");
     // methods.push(wav_dir + "method4/");
@@ -63,12 +63,12 @@ function start_experiment() {
     // methods.push(wav_dir + "method7/");
 
     // number of samples displayed per page
-    n_per_page = 5;
+    n_per_page = 4;
 
     // pick up samples randomly
     var rands = pickN(0, n_utt - 1, n_per_page * 2);
     // var number = document.getElementById("number").value
-    file_list = makeFileList(methods, set_num);
+    file_list = makeshuffledFileList(methods, set_num);
     outfile = name + "_" + "set" + set_num + "_int.csv";
     nat_scores = (new Array(file_list.length)).fill("");
     init();
@@ -106,13 +106,55 @@ function makeFileList(methods, which_set) {
     if (which_set == "4"){
         var names = loadText(wavnames_d);
     } 
-    if (which_set == "5"){
-        var names = loadText(wavnames_e);
-    } 
+    // if (which_set == "5"){
+    //     var names = loadText(wavnames_e);
+    // } 
     for (var i = 0; i < methods.length; i++) {
         for (var j = 0; j < names.length; j++) {
             files.push(methods[i] + names[j] + ".wav");
         }
+    }
+    files.shuffle();
+    return files;
+}
+
+function makeshuffledFileList(methods, which_set) {
+    var files = new Array();
+    if (which_set == "1"){
+        var HEALTHY_names = loadText(wavnames_a);
+        var PAL_names = loadText(wavnames_b);
+        var TEP_names = loadText(wavnames_c);
+        var EL_names = loadText(wavnames_d);
+    }
+    if (which_set == "2"){
+        var HEALTHY_names = loadText(wavnames_b);
+        var PAL_names = loadText(wavnames_a);
+        var TEP_names = loadText(wavnames_d);
+        var EL_names = loadText(wavnames_c);
+    } 
+    if (which_set == "3"){
+        var HEALTHY_names = loadText(wavnames_c);
+        var PAL_names = loadText(wavnames_d);
+        var TEP_names = loadText(wavnames_a);
+        var EL_names = loadText(wavnames_b);
+    } 
+    if (which_set == "4"){
+        var HEALTHY_names = loadText(wavnames_d);
+        var PAL_names = loadText(wavnames_c);
+        var TEP_names = loadText(wavnames_b);
+        var EL_names = loadText(wavnames_a);
+    } 
+    // for (var i = 0; i < methods.length; i++) {
+    //     for (var j = 0; j < names.length; j++) {
+    //         files.push(methods[i] + names[j] + ".wav");
+    //     }
+    // }
+    // Healthy
+    for (var j = 0; j < HEALTHY_names.length; j++) {
+        files.push(methods[0]+HEALTHY_names[j]+".wav");
+        files.push(methods[1]+PAL_names[j]+".wav");
+        files.push(methods[2]+TEP_names[j]+".wav");
+        files.push(methods[3]+EL_names[j]+".wav");
     }
     files.shuffle();
     return files;
@@ -228,7 +270,7 @@ const wavnames_a = "wav/wavnames1.txt"
 const wavnames_b = "wav/wavnames2.txt"
 const wavnames_c = "wav/wavnames3.txt"
 const wavnames_d = "wav/wavnames4.txt"
-const wavnames_e = "wav/wavnames5.txt"
+// const wavnames_e = "wav/wavnames5.txt"
 const n_utt = 1;
 
 // invalid enter key
