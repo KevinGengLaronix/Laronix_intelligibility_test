@@ -35,3 +35,13 @@ If you want to conduct tests other than a MOS test, you need to modify the code 
 You can utilize [ABXTest](https://github.com/chomeyama/ABXTest) if you want to conduct ABX test.
 
 Please feel free to ask any questions you may have.
+
+## What's in each set:
+Here is the strategy of select each sets sentences.
+1. Each set contains 4 types of audio, `HEALTHY`, `PAL`, `TEP`, `EL`. 7 of them are contained in each set so totally 28.
+
+2. To make sure there is no extra information (like the same content in both `HEALTHY` and `PAL`), each method is split up in 4 groups, and each set contains a exclusive combination of 4 methods. e.p `(1,2,3,4)` and `(4, 3, 2, 1)`
+
+3. Sentence length: To guarantee each sets distribution, we select 5 short sentences  `(8 <= WORDLEN <= 13)` and 3 long sentences `(WORDLEN >= 15)` in each group.
+
+
