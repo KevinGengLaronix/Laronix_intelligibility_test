@@ -27,7 +27,7 @@ const pickN = (min, max, n) => {
 }
 
 // start experiment
-function start_experiment() {
+function start_experiment(patient_id) {
     // get user name
     var name = document.getElementById("name").value.replace(" ", "_");
     if (name == "") {
@@ -53,7 +53,8 @@ function start_experiment() {
     var methods = [];
     // methods.push(wav_dir + "EL-Arthur_the_Rat_normed_5_snr_100/");
     // methods.push(wav_dir + "HEALTHY-Arthur_the_Rat_normed_5_snr_100/");
-    methods.push(wav_dir + "PAL_John-Arthur_the_Rat_normed_5_snr_100/");
+    // methods.push(wav_dir + "PAL_John-Arthur_the_Rat_normed_5_snr_100/");
+    methods.push(wav_dir + String(patient_id) + "/");
     // methods.push(wav_dir + "TEP-Arthur_the_Rat_normed_5_snr_100/");
     // methods.push(wav_dir + "method2/");
     // methods.push(wav_dir + "method3/");
@@ -68,11 +69,165 @@ function start_experiment() {
     // pick up samples randomly
     var rands = pickN(0, n_utt - 1, n_per_page * 2);
     // var number = document.getElementById("number").value
-    file_list = makeFileList(methods, set_num);
-    outfile = name + "_" + "set" + set_num + ".csv";
+    if (patient_id == "Patient_A"){
+        file_list = makeFileList(methods, set_num);
+    }
+    else if (patient_id == "Patient_B"){
+        file_list = makeFileList_B(methods, set_num);
+    }
+    else if (patient_id == "Patient_C"){
+        file_list = makeFileList_C(methods, set_num);
+    }
+
+    outfile = name + "_" + String(patient_id) + "_" + "set" + set_num + ".csv";
     nat_scores = (new Array(file_list.length)).fill("");
     init();
 }
+
+
+// // start experiment
+// function start_experiment_A() {
+//     // get user name
+//     var name = document.getElementById("name").value.replace(" ", "_");
+//     if (name == "") {
+//         alert("Please enter your name.");
+//         return false;
+//     }
+//     var set_num = "0"
+//     var number = document.getElementsByName("set");
+//     for (var i = 0; i < number.length; i++) {
+//         if (number[i].checked) {
+//             set_num = number[i].value;
+//         }
+//     }
+//     if (set_num == "0") {
+//         alert("Please press the set list number button.");
+//         return false;
+//     }
+
+//     // convert display
+//     Display();
+
+//     // directories for methods
+//     var methods = [];
+//     // methods.push(wav_dir + "EL-Arthur_the_Rat_normed_5_snr_100/");
+//     // methods.push(wav_dir + "HEALTHY-Arthur_the_Rat_normed_5_snr_100/");
+//     methods.push(wav_dir + "Patient_A");
+//     // methods.push(wav_dir + "TEP-Arthur_the_Rat_normed_5_snr_100/");
+//     // methods.push(wav_dir + "method2/");
+//     // methods.push(wav_dir + "method3/");
+//     // methods.push(wav_dir + "method4/");
+//     // methods.push(wav_dir + "method5/");
+//     // methods.push(wav_dir + "method6/");
+//     // methods.push(wav_dir + "method7/");
+
+//     // number of samples displayed per page
+//     n_per_page = 5;
+
+//     // pick up samples randomly
+//     var rands = pickN(0, n_utt - 1, n_per_page * 2);
+//     // var number = document.getElementById("number").value
+//     file_list = makeFileList(methods, set_num);
+//     outfile = name + "_Pat_A_" + "set" + set_num + ".csv";
+//     nat_scores = (new Array(file_list.length)).fill("");
+//     init();
+// }
+
+// // start experiment
+// function start_experiment_B() {
+//     // get user name
+//     var name = document.getElementById("name").value.replace(" ", "_");
+//     if (name == "") {
+//         alert("Please enter your name.");
+//         return false;
+//     }
+//     var set_num = "0"
+//     var number = document.getElementsByName("set");
+//     for (var i = 0; i < number.length; i++) {
+//         if (number[i].checked) {
+//             set_num = number[i].value;
+//         }
+//     }
+//     if (set_num == "0") {
+//         alert("Please press the set list number button.");
+//         return false;
+//     }
+
+//     // convert display
+//     Display();
+
+//     // directories for methods
+//     var methods = [];
+//     // methods.push(wav_dir + "EL-Arthur_the_Rat_normed_5_snr_100/");
+//     // methods.push(wav_dir + "HEALTHY-Arthur_the_Rat_normed_5_snr_100/");
+//     methods.push(wav_dir + "Patient_B");
+//     // methods.push(wav_dir + "TEP-Arthur_the_Rat_normed_5_snr_100/");
+//     // methods.push(wav_dir + "method2/");
+//     // methods.push(wav_dir + "method3/");
+//     // methods.push(wav_dir + "method4/");
+//     // methods.push(wav_dir + "method5/");
+//     // methods.push(wav_dir + "method6/");
+//     // methods.push(wav_dir + "method7/");
+
+//     // number of samples displayed per page
+//     n_per_page = 5;
+
+//     // pick up samples randomly
+//     var rands = pickN(0, n_utt - 1, n_per_page * 2);
+//     // var number = document.getElementById("number").value
+//     file_list = makeFileList(methods, set_num);
+//     outfile = name + "_Pat_B_" + "set" + set_num + ".csv";
+//     nat_scores = (new Array(file_list.length)).fill("");
+//     init();
+// }
+
+// // start experiment
+// function start_experiment_C() {
+//     // get user name
+//     var name = document.getElementById("name").value.replace(" ", "_");
+//     if (name == "") {
+//         alert("Please enter your name.");
+//         return false;
+//     }
+//     var set_num = "0"
+//     var number = document.getElementsByName("set");
+//     for (var i = 0; i < number.length; i++) {
+//         if (number[i].checked) {
+//             set_num = number[i].value;
+//         }
+//     }
+//     if (set_num == "0") {
+//         alert("Please press the set list number button.");
+//         return false;
+//     }
+
+//     // convert display
+//     Display();
+
+//     // directories for methods
+//     var methods = [];
+//     // methods.push(wav_dir + "EL-Arthur_the_Rat_normed_5_snr_100/");
+//     // methods.push(wav_dir + "HEALTHY-Arthur_the_Rat_normed_5_snr_100/");
+//     methods.push(wav_dir + "Patient_C");
+//     // methods.push(wav_dir + "TEP-Arthur_the_Rat_normed_5_snr_100/");
+//     // methods.push(wav_dir + "method2/");
+//     // methods.push(wav_dir + "method3/");
+//     // methods.push(wav_dir + "method4/");
+//     // methods.push(wav_dir + "method5/");
+//     // methods.push(wav_dir + "method6/");
+//     // methods.push(wav_dir + "method7/");
+
+//     // number of samples displayed per page
+//     n_per_page = 5;
+
+//     // pick up samples randomly
+//     var rands = pickN(0, n_utt - 1, n_per_page * 2);
+//     // var number = document.getElementById("number").value
+//     file_list = makeFileList(methods, set_num);
+//     outfile = name + "_Pat_C_" + "set" + set_num + ".csv";
+//     nat_scores = (new Array(file_list.length)).fill("");
+//     init();
+// }
 
 // convert display
 function Display() {
@@ -118,6 +273,33 @@ function makeFileList(methods, which_set) {
     return files;
 }
 
+function makeFileList_B(methods, which_set) {
+    var files = new Array();
+    if (which_set == "1"){
+        var names = loadText(wavnames_a_B);
+    }
+    for (var i = 0; i < methods.length; i++) {
+        for (var j = 0; j < names.length; j++) {
+            files.push(methods[i] + names[j] + ".wav");
+        }
+    }
+    files.shuffle();
+    return files;
+}
+
+function makeFileList_C(methods, which_set) {
+    var files = new Array();
+    if (which_set == "1"){
+        var names = loadText(wavnames_a_C);
+    }
+    for (var i = 0; i < methods.length; i++) {
+        for (var j = 0; j < names.length; j++) {
+            files.push(methods[i] + names[j] + ".wav");
+        }
+    }
+    files.shuffle();
+    return files;
+}
 const log = document.getElementById('log');
 
 function setAudio() {
@@ -229,6 +411,9 @@ const wavnames_b = "wav/wavnames2.txt"
 const wavnames_c = "wav/wavnames3.txt"
 const wavnames_d = "wav/wavnames4.txt"
 const wavnames_e = "wav/wavnames5.txt"
+
+const wavnames_a_B = "wav/Patient_B.txt"
+const wavnames_a_C = "wav/Patient_C.txt"
 const n_utt = 1;
 
 // invalid enter key
