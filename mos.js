@@ -261,13 +261,55 @@ function makeFileList(methods, which_set) {
     if (which_set == "4"){
         var names = loadText(wavnames_d);
     } 
-    if (which_set == "5"){
-        var names = loadText(wavnames_e);
-    } 
+    // if (which_set == "5"){
+    //     var names = loadText(wavnames_e);
+    // } 
     for (var i = 0; i < methods.length; i++) {
         for (var j = 0; j < names.length; j++) {
             files.push(methods[i] + names[j] + ".wav");
         }
+    }
+    files.shuffle();
+    return files;
+}
+
+function makeshuffledFileList(methods, which_set) {
+    var files = new Array();
+    if (which_set == "1"){
+        var HEALTHY_names = loadText(wavnames_a);
+        var PAL_names = loadText(wavnames_b);
+        var TEP_names = loadText(wavnames_c);
+        var EL_names = loadText(wavnames_d);
+    }
+    if (which_set == "2"){
+        var HEALTHY_names = loadText(wavnames_b);
+        var PAL_names = loadText(wavnames_a);
+        var TEP_names = loadText(wavnames_d);
+        var EL_names = loadText(wavnames_c);
+    } 
+    if (which_set == "3"){
+        var HEALTHY_names = loadText(wavnames_c);
+        var PAL_names = loadText(wavnames_d);
+        var TEP_names = loadText(wavnames_a);
+        var EL_names = loadText(wavnames_b);
+    } 
+    if (which_set == "4"){
+        var HEALTHY_names = loadText(wavnames_d);
+        var PAL_names = loadText(wavnames_c);
+        var TEP_names = loadText(wavnames_b);
+        var EL_names = loadText(wavnames_a);
+    } 
+    // for (var i = 0; i < methods.length; i++) {
+    //     for (var j = 0; j < names.length; j++) {
+    //         files.push(methods[i] + names[j] + ".wav");
+    //     }
+    // }
+    // Healthy
+    for (var j = 0; j < HEALTHY_names.length; j++) {
+        files.push(methods[0]+HEALTHY_names[j]+".wav");
+        files.push(methods[1]+PAL_names[j]+".wav");
+        files.push(methods[2]+TEP_names[j]+".wav");
+        files.push(methods[3]+EL_names[j]+".wav");
     }
     files.shuffle();
     return files;
@@ -308,7 +350,7 @@ function setAudio() {
         // set audio
         // TODO onchange detection
         document.getElementById("audio" + String(i)).innerHTML = `${i + 1}. <br>`
-            + `<audio src="${file_list[page * n_per_page + i]}" style="width: 100%"`
+            + `<audio src="${file_list[page * n_per_page + i]}" style="width: 80%"`
             + ' controls controlsList="noplaybackrate nodownload noremoteplayback" preload="auto">'
             + '</audio>';
         
@@ -361,17 +403,17 @@ function setButton() {
 function evaluation(i) {
     // document.getElementById(`nat${i}`).value = val;
     if (nat_scores[n_per_page * page + i] == "") {
-        nat_scores[page * n_per_page + i] = document.getElementById(`nat${i}`).value;
+        nat_scores[page * n_per_page + i] = "\"" + document.getElementById(`nat${i}`).value + "\"";
     }
     setButton();
 }
 
 function exportCSV() {
     var csvData = "";
-    csvData+="Utt, Method, Dictation\r\n"
+    csvData+="Utt,Method,Dictation\r\n"
     for (var i = 0; i < file_list.length; i++) {
         
-        csvData += file_list[i] + "," + file_list[i].split('/')[1] + ", "
+        csvData += file_list[i] + "," + file_list[i].split('/')[1] + ","
             + nat_scores[i] + "\r\n";
     }
 
